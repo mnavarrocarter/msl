@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 10
     env:
       COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --ignore-platform-req=php"
-      GITHUB_TOKEN: ${{ secrets.ORG_GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         dependencies:
