@@ -1,0 +1,41 @@
+{
+    "name": "mnavarrocarter/msl",
+    "description": "My own standard library for PHP",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "keywords": ["php", "php8"],
+    "authors": [
+        {
+            "name": "Matias Navarro Carter",
+            "email": "mnavarrocarter@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "MSL\\": "src"
+        },
+        "files": [
+            "lib/_autoload.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MSL\\": "tests"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.1"
+        }
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpunit/phpunit": "^9.5",
+        "vimeo/psalm": "^4.6",
+        "symfony/var-dumper": "^6.0"
+    }
+}

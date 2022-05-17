@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  lib:
+    image: mnavarrocarter/msl:dev
+    container_name: mnavarrocarter.msl.lib
+    build:
+      context: .mnavarro/docker
+      dockerfile: lib/Dockerfile
+      target: dev
+    volumes:
+      - .:/mnavarro/lib
+    working_dir: /mnavarro/lib
+    user: mnavarro
+    command: ["tail", "-f", "/dev/null"]
