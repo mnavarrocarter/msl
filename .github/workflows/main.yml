@@ -1,0 +1,85 @@
+# The purpose of the integration pipeline is to run code integration checks
+# Like static analysis, automated test suites and other checks
+name: "Main Workflow"
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  # Checks the code quality
+  quality-checks:
+    name: "Quality Checks"
+    runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 10
+    env:
+      COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --ignore-platform-req=php"
+      GITHUB_TOKEN: ${{ secrets.ORG_GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        dependencies:
+          - "locked"
+          - "highest"
+        php-version:
+          - "8.1"
+        operating-system:
+          - "ubuntu-latest"
+    steps:
+      - name: "Checkout Code"
+        uses: "actions/checkout@v2"
+      - name: "Setup PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "xdebug"
+          php-version: "${{ matrix.php-version }}"
+          ini-values: memory_limit=-1
+          tools: composer:v2
+      - name: "Cache dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: "${{ runner.os}}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+          restore-keys: "${{ runner.os}}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+      - name: "Configure Composer"
+        run: "composer config --global --auth github-oauth.github.com ${{ env.GITHUB_TOKEN }}"
+      - name: "Install highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
+        run: "composer update ${{ env.COMPOSER_FLAGS }}"
+        continue-on-error: true
+      - name: "Install locked dependencies"
+        if: ${{ matrix.dependencies == 'locked' }}
+        run: "composer install ${{ env.COMPOSER_FLAGS }}"
+      - name: "Run PHP CS Fixer"
+        run: "php vendor/bin/php-cs-fixer fix --dry-run -vvv"
+      - name: "Run Psalm"
+        run: "php vendor/bin/psalm --stats --no-cache --show-info=true"
+      - name: "Run PHPUnit"
+        run: "php vendor/bin/phpunit --coverage-text"
+      - name: "Upload Coverage Report"
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-coverage
+          path: var/coverage/
+
+
+  # Drafts a release. This will be uncommented when a first version is released.
+#  release:
+#    name: "Release"
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Semantic Release
+#        uses: codfish/semantic-release-action@v1
+#        with:
+#          branches: main
+#          tag_format: '${version}'
+#          plugins: |
+#            ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github']
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
