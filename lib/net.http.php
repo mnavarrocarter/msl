@@ -19,3 +19,14 @@ function handlerFunc(callable $func): Handler
         }
     };
 }
+
+/**
+ * @param string $uri
+ * @return Response
+ * @throws TransportError
+ */
+function get(string $uri): Response
+{
+    $request = Request::create(Method::GET, $uri);
+    return Client::default()->send($request);
+}

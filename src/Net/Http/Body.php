@@ -19,9 +19,29 @@ namespace MSL\Net\Http;
 use MSL\IO\EndOfFile;
 use MSL\IO\ReadCloser;
 
-enum Body implements ReadCloser
+final class Body implements ReadCloser
 {
-    case EMPTY;
+    private static ?Body $instance = null;
+
+    private function __construct()
+    {
+        // Noop
+    }
+
+    private function __clone()
+    {
+        // Noop
+    }
+
+    public static function empty(): Body
+    {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     public function close(): void
     {
         // Noop

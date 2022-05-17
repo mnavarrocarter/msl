@@ -28,7 +28,7 @@ class RequestTest extends TestCase
 {
     public function testQuery(): void
     {
-        $request = Request::create('POST', 'https://example.com');
+        $request = Request::create(Method::POST, 'https://example.com');
 
         $query = $request->getParsedQuery()
             ->add('foo', 'bar')
@@ -39,11 +39,5 @@ class RequestTest extends TestCase
         $request->uri = $query->inject($request->uri);
 
         $this->assertSame('foo=bar&foo=foo&bar=foo', $request->uri->getQuery());
-    }
-
-    public function testCreateFails(): void
-    {
-        $this->expectException(\ValueError::class);
-        Request::create('UNKNOWN', 'https://example.com');
     }
 }

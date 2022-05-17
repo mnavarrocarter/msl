@@ -25,6 +25,11 @@ final class NoopCloser implements ReadCloser
         $this->reader = $reader;
     }
 
+    public function getInner(): Reader
+    {
+        return $this->reader;
+    }
+
     /**
      * {@inheritDoc}
      */

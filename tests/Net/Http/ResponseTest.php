@@ -18,7 +18,6 @@ namespace MSL\Net\Http;
 
 use Closure;
 use MSL\IO\Buffer;
-use MSL\IO\NoopCloser;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -45,7 +44,7 @@ class ResponseTest extends TestCase
         return [
             [
                 function () {
-                    $resp = Response::create(204);
+                    $resp = Response::create(Status::NO_CONTENT);
                     $resp->headers->add('set-cookie', 'something');
                     $resp->headers->add('set-cookie', 'something else');
 
@@ -61,11 +60,11 @@ class ResponseTest extends TestCase
             ],
             [
                 function () {
-                    $resp = Response::create(200);
+                    $resp = Response::create();
                     $resp->headers->add('content-type', 'application/json');
                     $resp->headers->add('set-cookie', 'something');
                     $resp->headers->add('set-cookie', 'something else');
-                    $resp->body = new NoopCloser(Buffer::make('{"hello":"msg"}'));
+                    $resp->body = Buffer::make('{"hello":"msg"}');
 
                     return $resp;
                 },

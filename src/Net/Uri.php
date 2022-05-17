@@ -163,6 +163,62 @@ class Uri implements \Stringable
 
     public function toString(): string
     {
-        throw new \LogicException('Implement');
+        $uri = '';
+
+        if ('' !== $this->scheme) {
+            $uri .= $this->scheme.':';
+        }
+
+        $authority = $this->getAuthority();
+        if ('' !== $authority) {
+            $uri .= '//'.$authority;
+        }
+
+        if ('' !== $this->path) {
+            if ('' === $authority) {
+                $uri .= ':';
+            }
+            $uri .= ':'.$this->path;
+        }
+
+        if ('' !== $this->query) {
+            $uri .= '?'.$this->query;
+        }
+
+        if ('' !== $this->fragment) {
+            $uri .= '#'.$this->fragment;
+        }
+
+        return $uri;
+    }
+
+    public function getUserInfo(bool $obfuscated = false): string
+    {
+        $userInfo = '';
+        if ('' !== $this->user) {
+            $userInfo .= $this->user;
+        }
+        if ('' !== $this->pass) {
+            $userInfo .= ':'.$obfuscated ? '****' : $this->pass;
+        }
+
+        return $userInfo;
+    }
+
+    public function getAuthority(): string
+    {
+        $auth = '';
+        $userInfo = $this->getUserInfo();
+        if ('' !== $userInfo) {
+            $auth .= $userInfo.'@';
+        }
+        if ('' !== $this->host) {
+            $auth .= $this->host;
+        }
+        if (0 !== $this->port) {
+            $auth .= ':'.$this->port;
+        }
+
+        return $auth;
     }
 }

@@ -211,4 +211,29 @@ enum Status: int
             default => throw new \LogicException('Invalid or unused status')
         };
     }
+
+    public function isClientError(): bool
+    {
+        return $this->inRange(400, 499);
+    }
+
+    public function isServerError(): bool
+    {
+        return $this->inRange(500, 599);
+    }
+
+    public function isRedirect(): bool
+    {
+        return $this->inRange(300, 399);
+    }
+
+    public function isSuccess(): bool
+    {
+        return $this->inRange(200, 299);
+    }
+
+    public function inRange(int $a, int $b): bool
+    {
+        return $this->value >= $a && $this->value <= $b;
+    }
 }

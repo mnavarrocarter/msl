@@ -119,4 +119,12 @@ abstract class PHPResource
         }
         fclose($this->resource);
     }
+
+    /**
+     * @return null|closed-resource|resource
+     */
+    protected function getResource()
+    {
+        return $this->resource;
+    }
 }

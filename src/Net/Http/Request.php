@@ -42,13 +42,13 @@ class Request
     /**
      * Creates an HTTP Request.
      */
-    public static function create(string $method, string|Uri $uri, ReadCloser $body = Body::EMPTY): Request
+    public static function create(Method $method, string|Uri $uri, ReadCloser $body = null): Request
     {
         if (is_string($uri)) {
             $uri = Uri::parse($uri);
         }
 
-        return new self(Context\nil(), Version::HTTP11, Method::from($method), $uri, new Headers(), $body);
+        return new self(Context\nil(), Version::HTTP11, $method, $uri, new Headers(), $body ?? Body::empty());
     }
 
     /**

@@ -45,9 +45,9 @@ class Response implements \Stringable, IO\WriterTo
         return (string) $buff;
     }
 
-    public static function create(int $status, ReadCloser $body = Body::EMPTY): Response
+    public static function create(Status $status = Status::OK, ReadCloser $body = null): Response
     {
-        return new self(Version::HTTP11, Status::from($status), new Headers(), $body);
+        return new self(Version::HTTP11, $status, new Headers(), $body ?? Body::empty());
     }
 
     public function writeTo(IO\Writer $writer): int

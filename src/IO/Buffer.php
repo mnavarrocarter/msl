@@ -23,7 +23,7 @@ use Stringable;
  *
  * It is useful when you need readers and writers for testing purposes.
  */
-final class Buffer extends PHPResource implements ReadSeeker, ReaderAt, WriteSeeker, WriterAt, Stringable
+final class Buffer extends PHPResource implements ReadSeeker, ReaderAt, WriteSeeker, WriterAt, Stringable, ReadCloser, WriteCloser
 {
     public function __destruct()
     {
@@ -49,7 +49,7 @@ final class Buffer extends PHPResource implements ReadSeeker, ReaderAt, WriteSee
      */
     public static function make(string $string = ''): Buffer
     {
-        $buffer = new self(fopen('php://memory', 'a+b'));
+        $buffer = new self(fopen('php://temp', 'a+b'));
         $buffer->write($string);
         $buffer->seek(0, Seeker::START);
 
@@ -94,5 +94,10 @@ final class Buffer extends PHPResource implements ReadSeeker, ReaderAt, WriteSee
     public function writeAt(int $offset, string $bytes): int
     {
         return $this->innerWriteAt($offset, $bytes);
+    }
+
+    public function close(): void
+    {
+        $this->innerClose();
     }
 }

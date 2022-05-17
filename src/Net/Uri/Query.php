@@ -37,6 +37,16 @@ class Query implements IteratorAggregate, \Stringable
         return $this->encode();
     }
 
+    public static function fromArray(array $array): Query
+    {
+        $query = new self();
+        foreach ($array as $key => $value) {
+            $query->add($key, $value);
+        }
+
+        return $query;
+    }
+
     public static function fromUri(Uri $uri): Query
     {
         return self::decode($uri->getQuery());
