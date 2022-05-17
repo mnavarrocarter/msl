@@ -62,10 +62,8 @@ final class ResponseWriter extends PHPResource implements HttpResponseWriter, Fl
             throw new Error('Headers already sent');
         }
 
-        foreach ($this->headers as $name => $values) {
-            foreach ($values as $value) {
-                header($name.': '.$value, false, $status->value);
-            }
+        foreach ($this->headers as $name => $value) {
+            header($name.': '.$value, false, $status->value);
         }
 
         $this->sentHeaders = true;
