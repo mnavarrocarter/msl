@@ -48,7 +48,7 @@ class Request
             $uri = Uri::parse($uri);
         }
 
-        return new self(Context\nil(), Version::HTTP11, $method, $uri, new Headers(), $body ?? Body::empty());
+        return new self(Context\nil(), Version::HTTP11, $method, $uri, new Headers(), $body ?? NoBody::instance());
     }
 
     /**

@@ -18,8 +18,8 @@ namespace MSL\Net\Http;
 
 use MSL\Fmt;
 use MSL\IO;
-use MSL\IO\Buffer;
 use MSL\IO\ReadCloser;
+use MSL\IO\Temp;
 use MSL\Str;
 
 class Response implements \Stringable, IO\WriterTo
@@ -39,7 +39,7 @@ class Response implements \Stringable, IO\WriterTo
 
     public function __toString(): string
     {
-        $buff = Buffer::make();
+        $buff = Temp::make();
         $this->writeTo($buff);
 
         return (string) $buff;
@@ -47,7 +47,7 @@ class Response implements \Stringable, IO\WriterTo
 
     public static function create(Status $status = Status::OK, ReadCloser $body = null): Response
     {
-        return new self(Version::HTTP11, $status, new Headers(), $body ?? Body::empty());
+        return new self(Version::HTTP11, $status, new Headers(), $body ?? NoBody::instance());
     }
 
     public function writeTo(IO\Writer $writer): int

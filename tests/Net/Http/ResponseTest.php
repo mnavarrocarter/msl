@@ -17,7 +17,7 @@ declare(strict_types=1);
 namespace MSL\Net\Http;
 
 use Closure;
-use MSL\IO\Buffer;
+use MSL\IO\Temp;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -64,7 +64,7 @@ class ResponseTest extends TestCase
                     $resp->headers->add('content-type', 'application/json');
                     $resp->headers->add('set-cookie', 'something');
                     $resp->headers->add('set-cookie', 'something else');
-                    $resp->body = Buffer::make('{"hello":"msg"}');
+                    $resp->body = Temp::make('{"hello":"msg"}');
 
                     return $resp;
                 },

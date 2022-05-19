@@ -19,9 +19,9 @@ namespace MSL\Net\Http;
 use MSL\IO\EndOfFile;
 use MSL\IO\ReadCloser;
 
-final class Body implements ReadCloser
+final class NoBody implements ReadCloser
 {
-    private static ?Body $instance = null;
+    private static ?NoBody $instance = null;
 
     private function __construct()
     {
@@ -33,7 +33,7 @@ final class Body implements ReadCloser
         // Noop
     }
 
-    public static function empty(): Body
+    public static function instance(): NoBody
     {
         if (null === self::$instance) {
             self::$instance = new self();

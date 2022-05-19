@@ -21,12 +21,12 @@ use MSL\Arr;
 use MSL\Bytes;
 use MSL\Fmt;
 use MSL\IO;
-use MSL\IO\Buffer;
 use MSL\IO\EndOfFile;
 use MSL\IO\NoopCloser;
 use MSL\IO\ReadCloser;
 use MSL\IO\Reader;
 use MSL\IO\Seeker;
+use MSL\IO\Temp;
 use MSL\Str;
 
 /**
@@ -76,7 +76,7 @@ final class CurlTransport implements Transport
     public function send(Request $request): Response
     {
         $handle = $this->createHandle($request);
-        $buffer = Buffer::make('');
+        $buffer = Temp::make('');
 
         $response = $this->prepare($handle, $request, $buffer);
 
@@ -116,7 +116,7 @@ final class CurlTransport implements Transport
         return $handle;
     }
 
-    private function prepare(CurlHandle $handle, Request $request, Buffer $buffer): Response
+    private function prepare(CurlHandle $handle, Request $request, Temp $buffer): Response
     {
         if (\defined('CURLOPT_PROTOCOLS')) {
             curl_setopt($handle, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
@@ -143,7 +143,7 @@ final class CurlTransport implements Transport
                     return Bytes\len($data);
                 }
 
-                $parts = Arr\map(Str\split($str, ':'), Str\trim(...));
+                $parts = Arr\map(Str\split($str, ':', 2), Str\trim(...));
                 $response->headers->add($parts[0] ?? '', $parts[1] ?? '');
             }
 

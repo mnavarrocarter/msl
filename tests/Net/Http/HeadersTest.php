@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace MSL\Net\Http;
 
-use MSL\IO\Buffer;
+use MSL\IO\Temp;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -60,7 +60,7 @@ class HeadersTest extends TestCase
 
     public function testWrite(): void
     {
-        $buffer = Buffer::make();
+        $buffer = Temp::make();
 
         $headers = Headers::fromMap([
             'content-type' => 'application/json',

@@ -19,11 +19,13 @@ namespace MSL\IO;
 use Stringable;
 
 /**
- * Class Buffer represents a read-write stream that can be stored in memory.
+ * Class Temp represents a read-write stream that can be stored in memory.
+ *
+ * If the stream is too big, it goes into the filesystem.
  *
  * It is useful when you need readers and writers for testing purposes.
  */
-final class Buffer extends PHPResource implements ReadSeeker, ReaderAt, WriteSeeker, WriterAt, Stringable, ReadCloser, WriteCloser
+final class Temp extends PHPResource implements ReadSeeker, ReaderAt, WriteSeeker, WriterAt, Stringable, ReadCloser, WriteCloser
 {
     public function __destruct()
     {
@@ -47,7 +49,7 @@ final class Buffer extends PHPResource implements ReadSeeker, ReaderAt, WriteSee
      *
      * @throws Error
      */
-    public static function make(string $string = ''): Buffer
+    public static function make(string $string = ''): Temp
     {
         $buffer = new self(fopen('php://temp', 'a+b'));
         $buffer->write($string);

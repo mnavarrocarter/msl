@@ -14,19 +14,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace MSL\Net\Http\Cgi;
+namespace MSL\Net\Http;
 
 use MSL\IO\PHPResource;
 use MSL\IO\ReadCloser;
 
-/**
- * NoBody represents the PHP CGI input stream.
- */
-final class Body extends PHPResource implements ReadCloser
+final class StreamBody extends PHPResource implements ReadCloser
 {
-    public static function create(): Body
+    /**
+     * @param resource $resource
+     */
+    public static function make($resource): StreamBody
     {
-        return new self(fopen('php://input', 'rb'));
+        return new self($resource);
     }
 
     /**

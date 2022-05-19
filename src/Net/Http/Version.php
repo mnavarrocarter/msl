@@ -38,4 +38,13 @@ enum Version: string
             self::HTTP10, self::HTTP20 => 0,
         };
     }
+
+    public function toFloat(): float
+    {
+        return match ($this) {
+            self::HTTP10 => 1.0,
+            self::HTTP11 => 1.1,
+            self::HTTP20 => 2.0
+        };
+    }
 }

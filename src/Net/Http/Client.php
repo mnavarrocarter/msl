@@ -30,17 +30,37 @@ class Client
     public static function default(): Client
     {
         if (null === self::$default) {
-            self::$default = new self(CurlTransport::default());
+            self::$default = new self(StreamTransport::default());
         }
 
         return self::$default;
     }
 
     /**
-     * @throws TransportError
+     * Sends the request and obtains a response.
+     *
+     * @throws TransportError when a DNS or socket error occurs
      */
     public function send(Request $request): Response
     {
         return $this->transport->send($request);
+    }
+
+    /**
+     * Sends an HTTP Request in strict mode.
+     *
+     * Strict mode throws a HTTPError when a non-successful HTTP status code
+     * is returned from the server. The exception contains the response for
+     * further inspection.
+     *
+     * @throws HttpError
+     * @throws TransportError
+     */
+    public function sendStrict(Request $request): Response
+    {
+        $response = $this->send($request);
+        HttpError::check($request, $response);
+
+        return $response;
     }
 }
