@@ -37,6 +37,9 @@ class Query implements IteratorAggregate, \Stringable
         return $this->encode();
     }
 
+    /**
+     * @param array<string,string> $array
+     */
     public static function fromArray(array $array): Query
     {
         $query = new self();

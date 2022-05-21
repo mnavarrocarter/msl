@@ -16,3 +16,8 @@ function push(array &$array, mixed $element): int
 {
     return array_push($array, $element);
 }
+
+function reverse(array $array): array
+{
+    return array_reverse($array);
+}

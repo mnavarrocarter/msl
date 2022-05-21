@@ -27,7 +27,7 @@ class Request
     public Uri $uri;
     public Headers $headers;
     public ReadCloser $body;
-    private Context $ctx;
+    protected Context $ctx;
 
     protected function __construct(Context $ctx, Version $version, Method $method, Uri $uri, Headers $headers, ReadCloser $body)
     {
@@ -54,7 +54,7 @@ class Request
     /**
      * Returns a new request with the passed context.
      */
-    public function withContext(Context $ctx): Request
+    public function withContext(Context $ctx): static
     {
         $clone = clone $this;
         $clone->ctx = $ctx;
