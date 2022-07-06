@@ -38,7 +38,7 @@ class UriTest extends TestCase
             ['https://example.com/hello'],
             ['https://127.0.0.1:8000/path?foo=bar#hello'],
             ['mailto:jdoe@example.com'],
-            ['/hello?foo=bar']
+            ['/hello?foo=bar'],
         ];
     }
 }

@@ -138,7 +138,7 @@ final class CurlTransport implements Transport
                 if (0 === Str\index(Str\toLower($str), 'http/')) {
                     $parts = Str\split($str, ' ', 3);
                     $response->version = Version::from(Str\toUpper($parts[0]));
-                    $response->status = Status::from((int) ($parts[1] ?? '200'));
+                    $response->status = Status::make((int) ($parts[1] ?? '200'), $parts[2] ?? '');
 
                     return Bytes\len($data);
                 }

@@ -56,8 +56,10 @@ final class ResponseWriter extends PHPResource implements HttpResponseWriter, Fl
     /**
      * @throws Error when headers have been sent already
      */
-    public function writeHeaders(Status $status = Status::OK): void
+    public function writeHeaders(Status $status = null): void
     {
+        $status = $status ?? Status::fromInt();
+
         if ($this->sentHeaders) {
             throw new Error('Headers already sent');
         }

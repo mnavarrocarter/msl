@@ -35,4 +35,19 @@ enum Method: string
     case TRACE = 'TRACE';
 
     case CONNECT = 'CONNECT';
+    public function isSafe(): bool
+    {
+        return match ($this) {
+            self::GET, self::HEAD, self::TRACE, self::OPTIONS => true,
+            default => false
+        };
+    }
+
+    public function isIdempotent(): bool
+    {
+        return match ($this) {
+            self::POST, self::PATCH => false,
+            default => true,
+        };
+    }
 }

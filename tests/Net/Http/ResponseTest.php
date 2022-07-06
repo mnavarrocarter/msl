@@ -44,7 +44,7 @@ class ResponseTest extends TestCase
         return [
             [
                 function () {
-                    $resp = Response::create(Status::NO_CONTENT);
+                    $resp = Response::create(Status::fromInt(Status::NO_CONTENT));
                     $resp->headers->add('set-cookie', 'something');
                     $resp->headers->add('set-cookie', 'something else');
 

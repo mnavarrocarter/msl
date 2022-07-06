@@ -31,5 +31,5 @@ interface ResponseWriter extends Writer
      * Modifying the headers after this method is called will have no effect
      * in the response.
      */
-    public function writeHeaders(Status $status = Status::OK): void;
+    public function writeHeaders(Status $status = null): void;
 }

@@ -75,6 +75,7 @@ final class StreamTransport implements Transport
         if ($this->timeout >= 0) {
             $context['http']['timeout'] = $this->timeout;
         }
+
         if ('' !== $this->proxy) {
             $context['http']['proxy'] = $this->proxy;
             $context['http']['request_fulluri'] = true;
@@ -124,10 +125,9 @@ final class StreamTransport implements Transport
         foreach ($lines as $line) {
             if (-1 !== Str\index(Str\toLower($line), 'http/')) {
                 $response = Response::create();
-
                 $parts = Str\split($line, ' ', 3);
                 $response->version = Version::from(Str\toUpper($parts[0]));
-                $response->status = Status::from((int) ($parts[1] ?? '200'));
+                $response->status = Status::make((int) ($parts[1] ?? '200'), $parts[2] ?? '');
                 $current = Arr\push($responses, $response) - 1;
 
                 continue;

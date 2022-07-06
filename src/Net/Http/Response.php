@@ -20,7 +20,6 @@ use MSL\Fmt;
 use MSL\IO;
 use MSL\IO\ReadCloser;
 use MSL\IO\Temp;
-use MSL\Str;
 
 class Response implements \Stringable, IO\WriterTo
 {
@@ -45,9 +44,9 @@ class Response implements \Stringable, IO\WriterTo
         return (string) $buff;
     }
 
-    public static function create(Status $status = Status::OK, ReadCloser $body = null): Response
+    public static function create(Status $status = null, ReadCloser $body = null): Response
     {
-        return new self(Version::HTTP11, $status, new Headers(), $body ?? NoBody::instance());
+        return new self(Version::HTTP11, $status ?? Status::fromInt(), new Headers(), $body ?? NoBody::instance());
     }
 
     public function writeTo(IO\Writer $writer): int
@@ -57,7 +56,7 @@ class Response implements \Stringable, IO\WriterTo
             '%s %s %s%s',
             $this->version->value,
             $this->status->value,
-            Str\toUpper($this->status->phrase()),
+            $this->status->phrase,
             "\n"
         ));
 
