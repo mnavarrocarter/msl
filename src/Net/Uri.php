@@ -175,10 +175,7 @@ class Uri implements \Stringable
         }
 
         if ('' !== $this->path) {
-            if ('' === $authority) {
-                $uri .= ':';
-            }
-            $uri .= ':'.$this->path;
+            $uri .= $this->path;
         }
 
         if ('' !== $this->query) {
